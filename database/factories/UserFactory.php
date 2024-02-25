@@ -24,10 +24,12 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
+            'first_name' => fake()->firstName(),
+            'last_name' => fake()->lastName(),
             'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
+            'is_active' => true,
             'password' => static::$password ??= Hash::make('password'),
+            'password_changed_at' => now(),
             'remember_token' => Str::random(10),
         ];
     }
@@ -39,6 +41,26 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
+        ]);
+    }
+
+    /** 
+     * Indicate that the model's status should be inactive.
+     */
+    public function inactive(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'is_active' => false,
+        ]);
+    }
+
+    /**
+     * Indicate that the model's password has not changed initially.
+     */
+    public function passwordUnchanged(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'password_changed_at' => null,
         ]);
     }
 }
