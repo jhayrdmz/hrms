@@ -21,11 +21,40 @@ class EmployeeResource extends Resource
 
     protected static ?string $modelLabel = 'employee';
 
+    protected static ?int $navigationSort = 1;
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                //
+                Forms\Components\Tabs::make('Tabs')
+                    ->tabs([
+                        Forms\Components\Tabs\Tab::make('Tab 1')
+                            ->schema([
+                                Forms\Components\Section::make('Personal Details')
+                                    ->schema([
+                                        // ...
+                                    ])
+                                    ->columnSpan(['lg' => 1]),
+                                Forms\Components\Section::make('Personal Details')
+                                    ->schema([
+                                        Forms\Components\TextInput::make('first_name'),
+                                        Forms\Components\TextInput::make('first_name')
+                                    ])
+                                    ->columnSpan(['lg' => 2])
+                            ])
+                            ->columns(3),
+                        Forms\Components\Tabs\Tab::make('Tab 2')
+                            ->schema([
+                                // ...
+                            ]),
+                        Forms\Components\Tabs\Tab::make('Tab 3')
+                            ->schema([
+                                // ...
+                            ]),
+                ])
+                ->contained(false)
+                ->columnSpan(2)
             ]);
     }
 
@@ -69,7 +98,7 @@ class EmployeeResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
-            ->modifyQueryUsing(fn (Builder $query) => $query->withoutSelf()->withoutAdmin());
+            ->modifyQueryUsing(fn (Builder $query) => $query->employeesOnly()->withoutSelf());
     }
 
     public static function getRelations(): array

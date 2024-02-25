@@ -110,8 +110,7 @@ class UserResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ])
-            ->modifyQueryUsing(fn (Builder $query) => $query->whereNot('id', 1));
+            ]);
     }
 
     public static function getRelations(): array

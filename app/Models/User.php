@@ -31,6 +31,15 @@ class User extends Authenticatable implements FilamentUser, HasName
         'email',
         'password',
         'password_changed_at',
+        'employee_id',
+        'date_hired',
+        'date_of_birth',
+        'gender',
+        'contact_number',
+        'local_address',
+        'permanent_address',
+        'department_id',
+        'designation_id',
     ];
 
     /**
@@ -64,18 +73,23 @@ class User extends Authenticatable implements FilamentUser, HasName
         return "{$this->first_name} {$this->last_name}";
     }
 
-    public function scopeWithoutSuperAdmin(Builder $query)
+    public function scopeEmployeesOnly(Builder $query)
     {
-        return $query->whereNot('id', 1);
-    }
-
-    public function scopeWithoutAdmin(Builder $query)
-    {
-        return $query->withoutRole('Admin');
+        return $query->role('Employee');
     }
 
     public function scopeWithoutSelf(Builder $query)
     {
         return $query->whereNot('id', auth()->user()->id);
+    }
+
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
+    }
+
+    public function designation()
+    {
+        return $this->belongsTo(Designation::class);
     }
 }

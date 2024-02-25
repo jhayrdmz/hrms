@@ -19,6 +19,14 @@ return new class extends Migration
             $table->boolean('is_active')->default(true);
             $table->string('password');
             $table->rememberToken();
+
+            // personal details
+            $table->date('date_of_birth')->nullable();
+            $table->string('gender')->nullable();
+            $table->string('contact_number')->nullable();
+            $table->text('local_address')->nullable();
+            $table->text('permanent_address')->nullable();
+
             $table->timestamp('password_changed_at')->nullable();
             $table->timestamps();
         });
